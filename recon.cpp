@@ -163,13 +163,13 @@ void do_analysis()
     
     
     // process harder  
-    cout<<"process harder"<<endl;
+    //cout<<"process harder"<<endl;
     for (auto& x : vecHarder)
     {
         for (auto& y : vecPpro)
             if (compare_harder(x, y))
             {
-                cout<<"matched one item"<<endl;
+                //cout<<"matched one item"<<endl;
                 x.m_proc = EPROC_STATE::MATCHED;
                 y.m_proc = EPROC_STATE::MATCHED;
             }
@@ -177,13 +177,13 @@ void do_analysis()
 
 
     // process simpler   
-    cout<<"process simpler"<<endl;
+    //cout<<"process simpler"<<endl;
     for (auto& x : vecSimpler)
     {
         for (auto& y : vecPpro)
             if (compare_simpler(x, y))
             {
-                cout<<"matched one item"<<endl;
+                //cout<<"matched one item"<<endl;
                 x.m_proc = EPROC_STATE::MATCHED;
                 y.m_proc = EPROC_STATE::MATCHED;
             }
@@ -191,7 +191,7 @@ void do_analysis()
     
     
     // process simple 
-    cout<<"process simple"<<endl;
+    //cout<<"process simple"<<endl;
     for (auto& x : vecSimple)
     {
         for (auto& y : vecPpro)
@@ -293,13 +293,13 @@ void do_analysis()
 
 int main()
 {
-    std::vector<std::string> vec = {
-        "Hello", "from", "GCC", __VERSION__, "!" 
-    };
-    std::cout << vec << std::endl;
+    //std::vector<std::string> vec = {
+    //    "Hello", "from", "GCC", __VERSION__, "!" 
+    //};
+    //std::cout << vec << std::endl;
     
     //test1();
-    cout<<"start process"<<endl;
+    //cout<<"start process"<<endl;
     do_analysis();
     
 }

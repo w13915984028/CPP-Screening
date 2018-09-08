@@ -1,0 +1,173 @@
+#include <cmath>
+#include <cstdio>
+#include <vector>
+#include <iostream>
+#include <algorithm>
+#include <string>
+#include <map>
+#include <sstream>
+#include <iterator>
+#include <deque>
+
+using namespace std;
+
+
+struct INFO
+{
+    std::string tag;
+    std::map<string, string> attr;
+};
+
+/*
+4 3
+<tag1 value = "HelloWorld">
+<tag2 name = "Name1">
+</tag2>
+</tag1>
+tag1.tag2~name
+tag1~name
+tag1~value
+*/
+int main() {
+    /* Enter your code here. Read input from STDIN. Print output to STDOUT */   
+    //std::vector<INFO> tag_info;
+    std::map<string, string> info;
+    std::deque<string> tagStack;
+    int n = 0;
+    int q = 0;
+    std::string oneline;
+
+    //get first line
+    do {
+       // std::getline(std::cin, oneline);
+        oneline="4 3";
+        istringstream is;
+        is.str(oneline);
+        //cout<<"nwe line"<<oneline;
+        std::istream_iterator<std::string> beg(is), end;
+        std::vector<string> vec(beg,end);
+        //cout<<"the first line is:"<<vec[0]<<" "<<vec[1]<<endl;;
+        //cout<<endl;
+        n = std::stoi(vec[0]);
+        q = std::stoi(vec[1]);     
+    } while(0);
+
+    for (int j =0; j<n; j++)
+    {
+         switch (j)
+        {
+            case 0:     
+                oneline = "<tag1 value = \"HelloWorld\" source = \"Han\">";
+                break;
+            case 1:     
+                oneline = "<tag2 name = \"Name1\">";
+                break;
+            case 2:     
+                oneline = "</tag2>";
+                break;
+            case 3:     
+                oneline = "</tag1>";
+                break;
+            default:
+                break;
+        }
+        //cout<<"new line"<<oneline;
+        
+        //std::getline(std::cin, oneline);
+        
+        istringstream is;
+        is.str(oneline);
+        std::istream_iterator<std::string> beg(is), end;
+        std::vector<string> vec(beg,end);
+        string key="";
+        string ele;
+        string tag;
+        //cout<<endl<<"the line is:";
+        //for (auto x:vec)
+        //    cout<<x<<" ";
+        //return 0;
+        if(vec[0].at(1) == '/')  //end a nested tag
+        {
+            tagStack.pop_back();
+        }else
+        {
+            tag = vec[0];
+            //cout<<tag<<endl;
+            tag.erase(0,1); //strip <
+            //cout<<tag<<endl;
+            tagStack.push_back(tag);
+
+            for(auto x:tagStack)
+                key += x+".";       
+
+            //cout<<key<<endl;
+            //return 0;
+            //int i = vec.size();
+            
+            //for(auto y:vec)
+            //    cout<<y<<" ";
+            //cout<<endl;
+            //return 0;
+            
+            
+            for (auto i=1; i<vec.size(); i+=3)
+            {
+                //key
+                ele = key + vec[i];
+                //key,val pair
+                if (vec[i+2].find_first_of(">") != string::npos)
+                    vec[i+2].erase(vec[i+2].size()-2, 2);
+                else
+                    vec[i+2].erase(vec[i+2].size()-1, 1);
+                    
+                vec[i+2].erase(0, 1);
+                cout<<vec[i+2]<<endl;
+                info.insert(std::pair<string,string>(ele,vec[i+2]));
+
+            }
+
+        }
+
+    }
+    
+    //cout<<"the key pair is:"<<endl;
+   // for(auto x:info)
+    //    cout<<x.first<<"="<<x.second<<endl;
+    
+    for(int j=0; j<q; j++)
+    {
+         switch (j)
+        {
+            case 0:     
+                oneline = "tag1.tag2~name";
+                break;
+            case 1:     
+                oneline = "tag1~name";
+                break;
+            case 2:     
+                oneline = "tag1~value";
+                break;
+            case 3:     
+                oneline = "</tag1>";
+                break;
+            default:
+                break;
+        }
+        //cout<<"new line:"<<oneline<<endl;;    
+        auto k = oneline.find_first_of("~");
+        if(k !=string::npos)
+            oneline.replace(k,1,".");
+        //cout<<"after replace:"<<oneline<<endl;   
+        
+        auto kk =info.find(oneline);
+        if (kk != info.end())
+            cout<<kk->second<<endl;
+        else
+            cout<<"Not Found!"<<endl;
+    }
+    
+    
+
+
+return 0;
+}

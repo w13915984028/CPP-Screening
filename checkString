@@ -1,0 +1,71 @@
+#include <iostream>
+#include <string>
+#include <vector>
+
+using namespace std;
+
+
+// Complete the isValid function below.
+string isValid(string s) {
+
+    vector<int> vec;
+    vec.resize(26);
+    for(auto x=s.begin(); x!=s.end(); x++)
+    {
+        vec[*x-'a']++;
+    }
+
+    int min =0xfffffff, max =0;
+    
+    int charNum = 0;
+    for (auto i:vec)
+    {
+        if (i>0)
+        {
+            if (min > i)
+                min = i;
+            if (max < i)
+                max = i;
+            charNum++;
+        }
+    }
+
+    //cout<<"min="<<min<<";max="<<max<<endl;    
+    if (min == max)
+        return "YES";
+
+
+    int num1=0, num2=0;
+    for (auto x: vec)
+    {
+        if (x == min)
+            num1++;
+        if (x == max)
+            num2++;
+    }
+    
+    //cout<<"num1="<<num1<<";num2="<<num2<<endl;     
+    
+    if ((num1 + num2) != charNum)
+        return "NO";
+        
+    if ((num2 == 1) && (max - min ==1))
+        return "YES";
+        
+    if ((num1 == 1) && (min == 1))
+        return "YES";
+        
+
+    return "NO";
+
+}
+
+int main()
+{
+
+    cout<<isValid("a")<<endl;
+    cout<<isValid("abbac")<<endl;
+    cout<<isValid("abbaccc")<<endl;
+    cout<<isValid("aaaaaab")<<endl;
+    cout<<isValid("aaaacaab")<<endl;
+}

@@ -1,0 +1,284 @@
+
+/*
+
+You will find, the CPP vector, size may grow from 1, 2, 4, 8, 16, 
+each time it grows size, it will copy the existing elements,
+the performanc is...
+
+You need to think about void such behaviour
+*/
+
+
+#include <iostream>
+#include <vector>
+ 
+
+struct Student
+{
+    unsigned int age;
+    //std::string name;
+    unsigned int money;
+    Student():age(5),money(0){
+        std::cout<<"defautl constructor student "<<age<<" "<<money<<std::endl;
+    }
+    
+    Student(unsigned int ag, unsigned int mn):age(ag),money(mn){
+        std::cout<<"constructor student "<<age<<" "<<money<<std::endl;
+    }
+    
+    Student( Student& st):age(st.age),money(st.money){
+        std::cout<<"copy student "<<age<<" "<<money<<std::endl;
+    }    
+    
+    Student(const Student& st):age(st.age),money(st.money){
+        std::cout<<"copy-cons student "<<age<<" "<<money<<std::endl;
+    }  
+    
+    Student& operator = (const Student& st)
+    {
+        age=st.age;
+        money = st.money;
+        
+        std::cout<<"= &set const student "<<age<<" "<<money<<std::endl;
+        return *this;
+    }
+    
+    Student& operator = (Student& st)
+    {
+        age=st.age;
+        money = st.money;
+        
+        std::cout<<"= &set student "<<age<<" "<<money<<std::endl;
+        return *this;
+    }    
+    
+    Student& operator = (const Student&& st)
+    {
+        age=st.age;
+        money = st.money;
+        
+        std::cout<<"= &&set const student "<<age<<" "<<money<<std::endl;
+        return *this;
+    }    
+    
+    Student& operator = ( Student&& st)
+    {
+        age=st.age;
+        money = st.money;
+        
+        std::cout<<"= &&set student "<<age<<" "<<money<<std::endl;
+        return *this;
+    }     
+    ~Student(){
+        std::cout<<"destructor  student "<<age<<" "<<money<<std::endl;
+    }
+};
+ 
+int main ()
+{
+    //std::vector<Student>  students(3, Student());
+    std::vector<Student>  students;
+    //students.resize(3);
+    for(auto& x: students)
+        std::cout<<x.age<<std::endl;
+
+    //students.insert(students.end(), Student(15, 18));    
+    //students.emplace_back(58, 20);
+    for(auto i=0; i<10; i++)
+        students.emplace(students.end(), i, i*100);
+    //students.emplace(students.end(), 19, 33);
+
+    for(auto& x: students)
+        std::cout<<x.age<<std::endl;   
+        
+    std::cout<<"next test====="<<std::endl;
+    std::vector<Student> st;
+    st.resize(10);
+    st[1] = Student(18,20);
+    st[2].age = 30;
+    st[2].money=40;
+    st[3] = Student(3,9);
+    
+    std::cout<<"end test======"<<std::endl;
+}
+
+
+//
+// output
+/*
+constructor student 0 0
+
+constructor student 1 100
+
+copy-cons student 0 0
+
+destructor  student 0 0
+
+constructor student 2 200
+
+copy-cons student 0 0
+
+copy-cons student 1 100
+
+destructor  student 0 0
+
+destructor  student 1 100
+
+constructor student 3 300
+
+constructor student 4 400
+
+copy-cons student 0 0
+
+copy-cons student 1 100
+
+copy-cons student 2 200
+
+copy-cons student 3 300
+
+destructor  student 0 0
+
+destructor  student 1 100
+
+destructor  student 2 200
+
+destructor  student 3 300
+
+constructor student 5 500
+
+constructor student 6 600
+
+constructor student 7 700
+
+constructor student 8 800
+
+copy-cons student 0 0
+
+copy-cons student 1 100
+
+copy-cons student 2 200
+
+copy-cons student 3 300
+
+copy-cons student 4 400
+
+copy-cons student 5 500
+
+copy-cons student 6 600
+
+copy-cons student 7 700
+
+destructor  student 0 0
+
+destructor  student 1 100
+
+destructor  student 2 200
+
+destructor  student 3 300
+
+destructor  student 4 400
+
+destructor  student 5 500
+
+destructor  student 6 600
+
+destructor  student 7 700
+
+constructor student 9 900
+
+0
+
+1
+
+2
+
+3
+
+4
+
+5
+
+6
+
+7
+
+8
+
+9
+
+next test=====
+
+defautl constructor student 5 0
+
+defautl constructor student 5 0
+
+defautl constructor student 5 0
+
+defautl constructor student 5 0
+
+defautl constructor student 5 0
+
+defautl constructor student 5 0
+
+defautl constructor student 5 0
+
+defautl constructor student 5 0
+
+defautl constructor student 5 0
+
+defautl constructor student 5 0
+
+constructor student 18 20
+
+= &&set student 18 20
+
+destructor  student 18 20
+
+constructor student 3 9
+
+= &&set student 3 9
+
+destructor  student 3 9
+
+end test======
+
+destructor  student 5 0
+
+destructor  student 18 20
+
+destructor  student 30 40
+
+destructor  student 3 9
+
+destructor  student 5 0
+
+destructor  student 5 0
+
+destructor  student 5 0
+
+destructor  student 5 0
+
+destructor  student 5 0
+
+destructor  student 5 0
+
+destructor  student 0 0
+
+destructor  student 1 100
+
+destructor  student 2 200
+
+destructor  student 3 300
+
+destructor  student 4 400
+
+destructor  student 5 500
+
+destructor  student 6 600
+
+destructor  student 7 700
+
+destructor  student 8 800
+
+destructor  student 9 900
+*/
